@@ -29,7 +29,7 @@ ifeq ($(POWERFLAG),MXS_VBUS_CURRENT_DRAW)
 CFLAGS += -DMXS_VBUS_CURRENT_DRAW
 endif
 
-CFLAGS 	+= -Wall $(INCLUDEDIRS) -I./ -O -DSTMP378x -D$(ARCH)
+CFLAGS 	+= -Wall $(INCLUDEDIRS) -I./ -O -DSTMP378x -D$(ARCH) -ffreestanding
 LDFLAGS = -static -gc-sections -nostdlib -T $(BOOT_LAYOUT)
 
 
