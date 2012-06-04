@@ -3,7 +3,7 @@
 sources {
 	power_prep="./power_prep/power_prep";
 	sdram_prep="./boot_prep/boot_prep";
-	u_boot="/home/brian/ltib/rootfs/boot/u-boot";
+	u_boot="../ltib/rootfs/boot/u-boot";
 }
 
 section (0) {

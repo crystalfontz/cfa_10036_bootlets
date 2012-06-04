@@ -38,6 +38,7 @@ ifeq "$(DFT_IMAGE)" "$(wildcard $(DFT_IMAGE))"
 	elftosb -z -f imx28 -c ./uboot_ivt.bd -o i$(ARCH)_ivt_uboot.sb
 
 	@echo "generating oled_startup image"
+	sed -i 's,[^ *]zImage.*;,\tzImage="$(DFT_IMAGE)";,' oled_ivt.bd
 	elftosb -z -f imx28 -c ./oled_ivt.bd -o i$(ARCH)_ivt_oled.sb
 else
 	@echo "by using the pre-built kernel"

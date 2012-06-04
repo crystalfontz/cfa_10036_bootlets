@@ -8,7 +8,7 @@ sources {
 	power_prep="./power_prep/power_prep";
 	sdram_prep="./boot_prep/boot_prep";
 	linux_prep="./linux_prep/output-target/linux_prep";
-	zImage="/home/brian/ltib/rootfs/boot/zImage";
+	zImage="../ltib/rootfs/boot/zImage";
 }
 
 section (0) {
