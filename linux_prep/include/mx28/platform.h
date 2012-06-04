@@ -18,7 +18,7 @@
 #define __37XX_PLATFORM_H
 
 #if defined (BOARD_MX28_EVK)
-#define	MACHINE_ID	2531
+#define	MACHINE_ID	4142
 #else
 #error "Allocate a machine ID for your board"
 #endif
