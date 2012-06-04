@@ -22,7 +22,7 @@ all: build_prep gen_bootstream
 build_prep:
 
 
-gen_bootstream: linux_prep boot_prep power_prep oled_startup linux.bd uboot.bd linux.bd uboot.bd updater.bd 
+gen_bootstream: cfa10049_prep linux_prep boot_prep power_prep oled_startup linux.bd uboot.bd linux.bd uboot.bd updater.bd
 	@echo "generating linux kernel boot stream image"
 ifeq "$(DFT_IMAGE)" "$(wildcard $(DFT_IMAGE))"
 	@echo "by using the rootfs/boot/zImage"
@@ -74,6 +74,10 @@ boot_prep:
 	@echo "build boot_prep"
 	$(MAKE) -C boot_prep  ARCH=$(ARCH) BOARD=$(BOARD)
 
+cfa10049_prep:
+	@echo "build cfa10049_prep"
+	$(MAKE) -C cfa10049_prep ARCH=$(ARCH) BOARD=$(BOARD)
+
 updater: linux_prep boot_prep power_prep oled_startup
 	@echo "Build updater firmware"
 	elftosb -z -c ./updater.bd -o updater.sb
@@ -96,6 +100,7 @@ install:
 	cp -f oled_startup/oled_startup  ${DESTDIR}
 	
 	cp -f power_prep/power_prep  ${DESTDIR}
+	cp -f cfa10049_prep/cfa10049_prep  ${DESTDIR}
 
 	cp -f linux_prep/output-target/linux_prep ${DESTDIR}
 
@@ -113,6 +118,7 @@ clean:
 	$(MAKE) -C boot_prep clean ARCH=$(ARCH)
 	$(MAKE) -C power_prep clean ARCH=$(ARCH)
 	$(MAKE) -C oled_startup clean ARCH=$(ARCH)
+	$(MAKE) -C cfa10049_prep clean ARCH=$(ARCH)
 
-.PHONY: all oled_startup build_prep linux_prep boot_prep power_prep distclean clean
+.PHONY: all cfa10049_prep oled_startup build_prep linux_prep boot_prep power_prep distclean clean
 
