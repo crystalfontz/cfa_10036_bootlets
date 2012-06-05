@@ -17,10 +17,7 @@ ifeq ($(BOARD), iMX28_EVK)
 ARCH = mx28
 endif
 
-all: build_prep gen_bootstream
-
-build_prep:
-
+all: gen_bootstream
 
 gen_bootstream: cfa10049_prep linux_prep boot_prep power_prep oled_startup linux.bd
 	@echo "generating linux kernel boot stream image"
@@ -82,6 +79,7 @@ endif
 	$(MAKE) clean -C linux_prep
 	@echo "cross-compiling linux_prep"
 	$(MAKE) -C linux_prep ARCH=$(ARCH) BOARD=$(BOARD)
+
 install:
 	cp -f boot_prep/boot_prep  ${DESTDIR}
 
@@ -93,8 +91,6 @@ install:
 	cp -f linux_prep/output-target/linux_prep ${DESTDIR}
 
 	cp -f *.sb ${DESTDIR}
-	cp -f ./updater*.bd ${DESTDIR}
-	cp -f ./create_updater.sh  ${DESTDIR}
 
 distclean: clean
 clean:
