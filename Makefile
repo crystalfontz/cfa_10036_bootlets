@@ -3,7 +3,6 @@ MEM_TYPE ?= MEM_DDR1
 export MEM_TYPE
 
 DFT_IMAGE=$(DEV_IMAGE)/boot/zImage
-DFT_UBOOT=$(DEV_IMAGE)/boot/u-boot
 
 BOARD ?= stmp378x_dev
 
@@ -22,7 +21,7 @@ all: build_prep gen_bootstream
 build_prep:
 
 
-gen_bootstream: cfa10049_prep linux_prep boot_prep power_prep oled_startup linux.bd uboot.bd linux.bd uboot.bd updater.bd
+gen_bootstream: cfa10049_prep linux_prep boot_prep power_prep oled_startup linux.bd
 	@echo "generating linux kernel boot stream image"
 ifeq "$(DFT_IMAGE)" "$(wildcard $(DFT_IMAGE))"
 	@echo "by using the rootfs/boot/zImage"
@@ -30,24 +29,10 @@ ifeq "$(DFT_IMAGE)" "$(wildcard $(DFT_IMAGE))"
 	sed -i 's,[^ *]zImage.*;,\tzImage="$(DFT_IMAGE)";,' linux_ivt.bd
 	elftosb -z -c ./linux.bd -o i$(ARCH)_linux.sb
 	elftosb -z -f imx28 -c ./linux_ivt.bd -o i$(ARCH)_ivt_linux.sb
-
-	@echo "by using the rootfs/boot/u-boot"
-	sed -i 's,[^ *]u_boot.*;,\tu_boot="$(DFT_UBOOT)";,' uboot.bd
-	sed -i 's,[^ *]u_boot.*;,\tu_boot="$(DFT_UBOOT)";,' uboot_ivt.bd
-	elftosb -z -c ./uboot.bd -o i$(ARCH)_uboot.sb
-	elftosb -z -f imx28 -c ./uboot_ivt.bd -o i$(ARCH)_ivt_uboot.sb
-
-	@echo "generating oled_startup image"
-	sed -i 's,[^ *]zImage.*;,\tzImage="$(DFT_IMAGE)";,' oled_ivt.bd
-	elftosb -z -f imx28 -c ./oled_ivt.bd -o i$(ARCH)_ivt_oled.sb
 else
 	@echo "by using the pre-built kernel"
 	elftosb -z -c ./linux.bd -o i$(ARCH)_linux.sb
 	elftosb -z -f imx28 -c  ./linux_ivt.bd -o i$(ARCH)_ivt_linux.sb
-
-	@echo "generating U-Boot boot stream image"
-	elftosb -z -c ./uboot.bd -o i$(ARCH)_uboot.sb
-	elftosb -z -f imx28 -c ./uboot_ivt.bd -o i$(ARCH)_ivt_uboot.sb
 endif
 	#@echo "generating kernel bootstream file sd_mmc_bootstream.raw"
 	#Please use cfimager to burn xxx_linux.sb. The below way will no
@@ -83,6 +68,7 @@ updater: linux_prep boot_prep power_prep oled_startup
 	@echo "Build updater firmware"
 	elftosb -z -c ./updater.bd -o updater.sb
 	elftosb -z -f imx28 -c ./updater_ivt.bd -o updater_ivt.sb
+
 linux_prep:
 ifneq "$(CMDLINE1)" ""
 	@echo "by using environment command line"
@@ -106,8 +92,6 @@ install:
 	cp -f linux_prep/output-target/linux_prep ${DESTDIR}
 
 	cp -f *.sb ${DESTDIR}
-#	to create finial mfg updater.sb
-#	cp -f elftosb ${DESTDIR}
 	cp -f ./updater*.bd ${DESTDIR}
 	cp -f ./create_updater.sh  ${DESTDIR}
 
