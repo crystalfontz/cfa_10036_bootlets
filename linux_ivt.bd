@@ -4,7 +4,7 @@ options {
 	flags = 0x01;
 }
 sources {
-	oled_startup="./oled_startup/oled_startup";
+//	oled_startup="./oled_startup/oled_startup";
 	cfa10049_prep="./cfa10049_prep/cfa10049_prep";
 	power_prep="./power_prep/power_prep";
 	sdram_prep="./boot_prep/boot_prep";
@@ -17,9 +17,9 @@ section (0) {
 	//----------------------------------------------------------
 	// cfa10049 initialization
 	//----------------------------------------------------------
-	load oled_startup;
-	load ivt (entry = oled_startup:_start) > 0x8000;
-	hab call 0x8000;
+//	load oled_startup;
+//	load ivt (entry = oled_startup:_start) > 0x8000;
+//	hab call 0x8000;
 
 	//----------------------------------------------------------
 	// cfa10049 initialization
